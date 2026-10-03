@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Student Portal",
+    "slug": "student-portal",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E2F3E6",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "softwareKeyboardLayoutMode": "resize"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Choose an optional picture for your Lost & Found post.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ]
+    ]
+  }
+}
