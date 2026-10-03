@@ -30,7 +30,7 @@ export const initialAttendance = {
   },
 };
 export const initialPosts = [
-  { id: 'post-1', type: 'found', title: 'A notebook full of ideas', description: 'Blue spiral notebook with database notes. Tell me the name on the first page to collect it.', location: 'Library · second floor', incidentDate: '2026-09-15', priority: 'Normal', contact: 'sara@university.example', imageUri: null, authorRoll: 'i230101' },
-  { id: 'post-2', type: 'lost', title: 'Black wallet', description: 'Small black wallet with a student card inside. Please get in touch if you spot it.', location: 'Main cafeteria', incidentDate: '2026-09-16', priority: 'High', contact: 'basit@university.example', imageUri: null, authorRoll: 'i233018' },
-  { id: 'post-3', type: 'found', title: 'Silver water bottle', description: 'A stainless steel bottle left on the courtyard bench. Kept at the reception desk.', location: 'Central courtyard', incidentDate: '2026-09-17', priority: 'Low', contact: 'reception@university.example', imageUri: null, authorRoll: 'i230101' },
+  { id: 'post-1', type: 'found', title: 'A notebook full of ideas', description: 'Blue spiral notebook with database notes. Tell me the name on the first page to collect it.', location: 'Library', incidentDate: '2026-09-15', priority: 'Normal', contact: 'sara@fast.example', imageUri: null, authorRoll: 'i230101' },
+  { id: 'post-2', type: 'lost', title: 'Black wallet', description: 'Small black wallet with a student card inside. Please get in touch if you spot it.', location: 'Main cafeteria', incidentDate: '2026-09-16', priority: 'High', contact: 'basit@fast.example', imageUri: null, authorRoll: 'i233018' },
+  { id: 'post-3', type: 'found', title: 'Silver water bottle', description: 'A stainless steel bottle left on the cs lawn bench. Kept at one stop.', location: 'CS Lawn', incidentDate: '2026-09-17', priority: 'Low', contact: 'onestop@fast.example', imageUri: null, authorRoll: 'i230101' },
 ];

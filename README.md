@@ -2,7 +2,7 @@
 
 A beginner-friendly Expo / React Native assignment prototype. Students can see their own attendance and weekly classes, manage course registration, and find lost-and-found posts without searching a large timetable or busy group chat.
 
-This is the requested **pre-chart milestone**, not a complete final assignment submission.
+The dashboard now includes the requested bar and pie attendance charts. Native-device verification and final submission preparation remain outstanding.
 
 ## Run locally
 
@@ -30,7 +30,7 @@ These hardcoded credentials are only for the assignment demo and provide no real
 ## Features
 
 - Login conditionally reveals the password field. Changing the roll number clears the old password and error.
-- Dashboard welcome and ordinary feature-entry buttons, with Sign Out.
+- Dashboard with registered-course and weighted-attendance summaries, Attendance by Course bar chart, Attended vs Missed Sessions pie chart, feature-entry buttons, and Sign Out.
 - Register/drop offerings; prevent duplicates and simultaneous sections of the same course.
 - Read-only attendance cards and course detail pages with dated Present/Absent records, plus a summary of the remaining lectures needed to meet the 80% minimum.
 - Monday–Friday agenda containing only registered offerings, sorted by start time.
@@ -50,6 +50,21 @@ These hardcoded credentials are only for the assignment demo and provide no real
 An offering ID identifies one course section and joins registrations, attendance, and timetable entries. Registrations are `{ rollNumber: [offeringId] }`; attendance is `{ rollNumber: { offeringId: { sessions: [{ date, status }] } } }`. Present counts and total sessions are derived from that dated record. Registered course objects and timetable rows are derived, never copied into independent state. Drop preserves the attendance record so re-registration restores it. A new offering starts with an empty session list. Course details share the same records as the attendance overview. Students cannot edit attendance. Posts have a unique ID, author roll number, type, incident date, details, priority, contact, and optional local image URI.
 
 Signing out unmounts the login/session flow and clears feedback. Account-specific academic data remains separated by roll number for the running session. The community feed is shared by demo accounts within that same app instance.
+
+## Dashboard charts
+
+Installed chart dependencies: **react-native-chart-kit 7.0.4** and **react-native-svg 15.15.4** (Expo SDK 57 compatible). Versions are pinned by `package-lock.json`. Run using `npm start` or `npm run web`. Installation for a fresh setup is `npm install`; the packages were added with `npx expo install react-native-chart-kit react-native-svg`.
+
+`DashboardCharts.js` imports `BarChart` and `PieChart` from the package root, using its supported legacy props consistently (not `/v2`). The [official library README](https://github.com/chart-kit/react-native-chart-kit) documents the root API's continued availability; installed types/source were checked for the props used.
+
+`getDashboardAttendance` derives counts directly from the same dated Present/Absent records used by the attendance views. There is no independent dashboard dataset or synchronizing effect. Register/drop or any parent attendance update triggers fresh calculations. Student attendance editing remains removed, as requested.
+
+- Bars: rounded `present / recorded sessions * 100` by course. The axis starts at zero, shows % units, and automatically scales its upper bound. Zero-session courses are omitted and listed in a note; actual 0% courses still have labeled zero bars.
+- Pie: summed attended and missed counts across registered courses. Overall percentage is `sum(present) / sum(sessions) * 100`, rounded only for display. For 8/10 and 18/30, this gives 26 attended, 14 missed, and 65% overall, not 70%.
+- No courses and no sessions have separate empty states. Invalid session arrays/statuses suppress charts and show feedback. Dated records inherently derive nonnegative integer counts with present no greater than total. Imported count-only records are rejected rather than silently interpreted as dated records.
+- Each chart card measures its inner width. Many course bars scroll horizontally; the pie stays centered within the available width. A textual legend retains both counts even when one is zero.
+
+Screenshots: `screenshots/11-dashboard-charts.png`, `12-dashboard-pie.png`, and `13-dashboard-small-phone.png` show actual rendered charts (the small-phone capture uses an all-missed test fixture).
 
 ## Viva preparation
 
@@ -76,7 +91,7 @@ Try changing the attendance threshold, adding a course plus schedule rows, or ed
 - Photos are optional local URIs, not uploaded or persisted. The system image-only picker follows the [installed SDK 57 API](https://docs.expo.dev/versions/v57.0.0/sdk/imagepicker/). Cancellation leaves the form intact; picker errors show feedback and allow posting without a photo. Native permission prompts vary by OS. Camera/audio permissions are disabled in app configuration.
 - Login uses the supplied `assets/portal.png`. Expo launcher icons are still template assets.
 - Dated attendance and planned lecture totals remain seeded local data. The guide includes all remaining lectures in the final denominator. For example, 6/10 attended with 10 lectures left requires 10/10, not 6/10, to finish at 80%. If even perfect remaining attendance cannot reach 80%, it displays “Debarred — contact teacher.”
-- **Final dashboard requires react-native-chart-kit and at least two different meaningful chart types; data and design pending.** The chart package is intentionally not installed yet. Academic data is passed to the dashboard for that later work. No marks module is included.
+- The two-chart dashboard requirement is implemented. No marks module is included.
 
 ## Verification and handover
 
@@ -85,10 +100,10 @@ See [CHECKS.md](CHECKS.md) for checks actually run and pending native checks. `s
 Useful checks:
 
 ```bash
-node --test tests/attendance.test.mjs
+node --test tests/*.test.mjs
 npm run lint
 npx expo-doctor
 npx expo export --platform all
 ```
 
-The source code is prepared locally. No GitHub repository, Snack, deployment, or GCR submission was created. Before final submission: finish the two-chart dashboard, complete native-device checks, review/adapt the code, and supply the actual AI-report template. Confirm the applicable course deadline and repository-visibility rule with the instructor; the brief references a printed 20 September 2026, 11:50 pm deadline, which must not be assumed current. Then prepare the required repository link and screenshots/video for GCR yourself or explicitly request assistance.
+The source code is prepared locally. No GitHub repository, Snack, deployment, or GCR submission was created. Before final submission: complete native-device checks, review/adapt the code, and supply the actual AI-report template. Confirm the applicable course deadline and repository-visibility rule with the instructor; the brief references a printed 20 September 2026, 11:50 pm deadline, which must not be assumed current. Then prepare the required repository link and screenshots/video for GCR yourself or explicitly request assistance.

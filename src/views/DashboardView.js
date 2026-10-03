@@ -1,4 +1,7 @@
 import { Text, View, Pressable } from 'react-native';
+import DashboardCharts from '../components/DashboardCharts';
+import EmptyState from '../components/EmptyState';
+import { getDashboardAttendance } from '../utils/dashboard';
 import Screen from '../components/Screen';
 import PrimaryButton from '../components/PrimaryButton';
 import { colors, styles } from '../theme';
@@ -9,9 +12,16 @@ const features = [
   { view: 'lostFound', title: 'Lost & Found', detail: 'Help something find its way home.', symbol: '◇' },
 ];
 export default function DashboardView({ student, courses, attendance, onView, onSignOut }) {
-  // Academic props are available here for the deferred chart milestone.
-  return <Screen title={`Hello, ${student.name.split(' ')[0]}.`} subtitle="">
-    <View style={[styles.card, { backgroundColor: colors.pale, borderColor: colors.pale }]}><Text style={styles.eyebrow}>YOUR SEMESTER AT A GLANCE</Text><Text style={styles.heading}>Make this semester yours.</Text><Text style={styles.text}>{student.roll.toUpperCase()} · Semester {student.semester}</Text><Text style={styles.muted}>{courses.length} registered courses · Fall 2026</Text></View>
+  const summary = getDashboardAttendance(courses, attendance);
+  return <Screen title={`Hello, ${student.name.split(' ')[0]}.`} subtitle={`${student.roll.toUpperCase()} · Semester ${student.semester} · Fall 2026`}>
+    <View style={[styles.row, { alignItems: 'stretch' }]}>
+      <View style={[styles.card, { flex: 1, minWidth: 120, backgroundColor: colors.pale }]}><Text style={styles.muted}>Registered Courses</Text><Text style={styles.title}>{courses.length}</Text></View>
+      <View style={[styles.card, { flex: 1, minWidth: 120, backgroundColor: colors.pale }]}><Text style={styles.muted}>Overall Attendance</Text><Text style={summary.overall === null ? styles.label : styles.title}>{summary.invalid.length ? 'Unavailable' : summary.overall === null ? 'No sessions yet' : `${summary.overall}%`}</Text></View>
+    </View>
+    {!courses.length ? <EmptyState title="Register a course to see your attendance" message="Your attendance charts will appear here." action="Register Courses" onAction={() => onView('registration')} />
+      : summary.invalid.length ? <View style={styles.card}><Text accessibilityRole="alert" style={styles.error}>Attendance records need checking for {summary.invalid.join(', ')}. Contact your teacher to correct the records before viewing the charts.</Text></View>
+      : !summary.sessionTotal ? <EmptyState title="No attendance sessions recorded yet" message="Charts will appear when attendance is recorded for your courses." />
+      : <DashboardCharts summary={summary} />}
     <Text style={styles.heading}>Where would you like to go?</Text>
     {features.map(feature => <Pressable key={feature.view} accessibilityRole="button" accessibilityLabel={feature.title} onPress={() => onView(feature.view)} style={({ pressed }) => [styles.card, { flexDirection: 'row', alignItems: 'center', opacity: pressed ? 0.7 : 1 }]}>
       <View style={{ width: 44, height: 44, borderRadius: 13, backgroundColor: colors.pale, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: colors.primary, fontSize: 26 }}>{feature.symbol}</Text></View>

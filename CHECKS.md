@@ -55,3 +55,21 @@ This revision supersedes earlier checks describing attendance-editing controls o
 - JavaScript type checking of `src/utils/attendance.js` and `src/data/demoData.js` passed using TypeScript's `--allowJs --checkJs --noEmit` flags with JSDoc types. No TypeScript application files were added; this was a focused check, not full-app type coverage.
 - Android, iOS, and web export passed with the new detail view and bundled portal asset.
 - Native device checks remain pending. The debarred branch was verified through calculation tests; the seeded accounts currently have reachable targets.
+
+## Dashboard charts — 3 October 2026
+
+The earlier deferred-chart milestone is now complete. Both real library components (`BarChart` and `PieChart`, root API, react-native-chart-kit 7.0.4) are implemented. react-native-svg is 15.15.4.
+
+Executed successfully:
+
+- Nine Node tests total: attendance guide tests plus dashboard weighted totals, empty/mixed records, all-attended/all-missed, invalid records, and recomputation after changed records.
+- Browser: both charts render with the seeded shared data; dropping AI changes overall from 80% to 85%; adding a zero-session CN course lists its code without changing totals.
+- Browser fixtures injected temporarily into App's attendance state: 8/10 plus 18/30 gives bars 80%/60%, counts 26/14, and 65% overall. All-attended and all-missed render single-category pies, retain both legend counts, and produce no NaN/Infinity SVG geometry. Zero-percent bars render without fake data. No attendance-editing controls were added to the application.
+- Browser: no sessions, invalid records, and no registrations suppress charts and show the appropriate feedback/action. Invalid fixtures exercise the dated-session data contract, not an unused aggregate-count model.
+- 390 px and 320 px browser viewport checks; no page horizontal overflow, nested chart scrolling preserved, actual screenshots captured and visually inspected. No JavaScript page errors recorded.
+- `npm run lint` passed. Focused JS type checking of attendance/dashboard helpers and seed data passed using `--allowJs --checkJs --noEmit` (not full-app type coverage).
+- Expo Doctor: 21/21 passed. Android, iOS, and web export passed.
+
+New screenshots: `11-dashboard-charts.png`, `12-dashboard-pie.png`, `13-dashboard-small-phone.png`. The last shows an all-missed test fixture; the first two show initial account data. Browser fixture updates existed only in the automated check's running app state and reset on reload.
+
+Native-device execution, accessibility on a device, student review, actual AI-report template, and submission remain pending. No deployment, repository publication, or submission occurred.
